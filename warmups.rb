@@ -23,27 +23,28 @@ Node = Struct.new(:tag, :data, :children)
 
 class HTMLParser
 
+  OPENING = /<([a-z]*?)>/
+  CLOSING = /<\/([a-z]*?)>/
+  BOTH = /<(.*?)>/
+
   def initialize(html)
     @root = Node.new("html",html, []) 
+    @stack = []
     parser(@root)
+    @html = html
+  end
+
+  def tags
+    @html.scan(/<.*?>/)
+  end
+
+  def text
+    @html.split(/<.*?>/)
   end
 
   def parser(node)
-    first_match = node.data.match(/<(.*?)>/)
 
-    (/<\/(.*?)>/)
-
-    first_tag = first_match[1]
-    rest_of_string = first_match.post_match
-    node.children << Node.new(parse_tag(first_tag), rest_of_string, nil) 
-
-    next_match = root.rest_of_string.match(/<(.*?)\s/)
-    next_tag = next_match[1]
-    rest_of_it = next_tag.post_match
-    next_node = Node.new(parse_tag(next_tag), rest_of_it, root) # p
   end
-
-/<(.*?)>/
 
 # "<div>  div text before  <p>    p text  </p>  <div>    more div text  </div>  div text after</div>"
 
@@ -65,8 +66,31 @@ class HTMLParser
 
 
 
+    # first_match = node.data.match(/<([a-z]*?)>/)
+    # stack = []
+    # if first_match
+    #   first_tag = first_match[1]
+    #   rest_of_string = first_match.post_match
+    #   new_node = Node.new(first_tag, rest_of_string, [])
+    #   stack << new_node
+    #   node.children << new_node
+    # end
+    # binding.pry
+    # stack.pop if new_node.data.match(/<\/([a-z]*?)>/)[1] == stack[-1].tag
+    # until stack.empty?
+    #   parser(new_node)
+    # end
+
+
+
+
 
 
 
 end
+
+h = HTMLParser.new("<div>  div text before  <p>    p text  </p>  <div>    more div text  </div>  div text after</div>")
+
+
+puts h.tags
 
