@@ -20,7 +20,7 @@ end
 
 parse_tag("<p class='foo bar' id='baz' name='fozzie'>")
 
-Node = Struct.new(:tag, :data, :children, :parent)
+Node = Struct.new(:tag, :data)
 
 class HTMLParser
 
@@ -33,6 +33,19 @@ class HTMLParser
   end
 
 /<(.*?)>/
+
+# "<div>  div text before  <p>    p text  </p>  <div>    more div text  </div>  div text after</div>"
+
+# <div>
+#   div text before
+#   <p>
+#     p text
+#   </p>
+#   <div>
+#     more div text
+#   </div>
+#   div text after
+# </div>
 
 
 
