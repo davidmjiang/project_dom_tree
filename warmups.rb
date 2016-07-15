@@ -4,7 +4,6 @@ def parse_tag(string)
   tag_hash[:id] = string.match(/id='(.*?)'/)[1]
   tag_hash[:name] = string.match(/name='(.*?)'/)[1]
   tag_hash[:class] = string.match(/class='(.*?)'/)[1].split(" ")
-  binding.pry
 end
 
 # "<p class='foo bar' id='baz' name='fozzie'>"
