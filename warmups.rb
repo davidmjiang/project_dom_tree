@@ -64,28 +64,7 @@ attr_reader :root
         current_node.children << text_array.shift
       end
     end
-
   end
-
-# "<div>  div text before  <p>    p text  </p>  <div>    more div text  </div>  div text after</div>"
-
-#find the first tag in the string
-#make a new node with tag = parse_tag(that tag) and data = the rest. this is the root.
-#repeat with the rest of the tags inside the root's data, setting their parent to the root
-
-# <div>
-#   div text before
-#   <p>
-#     p text
-#   </p>
-#   <div>
-#     more div text
-#   </div>
-#   div text after
-# </div>
-
-
-
 
     # first_match = node.data.match(/<([a-z]*?)>/)
     # stack = []
@@ -101,13 +80,19 @@ attr_reader :root
     # until stack.empty?
     #   parser(new_node)
     # end
+end
 
-
-
-
-
-
-
+def outputter(node)
+  current_root = node
+  puts current_root.tag
+  current_root.children.each do |child|
+    if child.is_a?(String)
+      puts child
+    else
+      outputter(child)
+    end
+  end
+  puts "</#{current_root.tag[1..-2]}>"
 end
 
 h = HTMLParser.new("<div>  div text before  <p>    p text  </p>  <div>    more div text  </div>  div text after</div>")
