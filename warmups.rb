@@ -4,6 +4,7 @@ def parse_tag(string)
   tag_hash[:id] = string.match(/id='(.*?)'/)[1]
   tag_hash[:name] = string.match(/name='(.*?)'/)[1]
   tag_hash[:class] = string.match(/class='(.*?)'/)[1].split(" ")
+  tag_hash
 end
 
 # "<p class='foo bar' id='baz' name='fozzie'>"
@@ -31,10 +32,9 @@ attr_reader :root
   BOTH = /<.*?>/
 
   def initialize(html)
-    @root = Node.new("html", [], nil) 
+    @root = Node.new("document", {:type => "document"},[], nil) 
     @html = html
     @stack = []
-    parser(@root)
   end
 
   def tags
@@ -45,7 +45,7 @@ attr_reader :root
     @html.split(BOTH)
   end
 
-  def parser(node)
+  def parse
     tags_array = tags
     text_array = text[1..-1]
     current_parent = @root
@@ -66,20 +66,6 @@ attr_reader :root
     end
   end
 
-    # first_match = node.data.match(/<([a-z]*?)>/)
-    # stack = []
-    # if first_match
-    #   first_tag = first_match[1]
-    #   rest_of_string = first_match.post_match
-    #   new_node = Node.new(first_tag, rest_of_string, [])
-    #   stack << new_node
-    #   node.children << new_node
-    # end
-    # binding.pry
-    # stack.pop if new_node.data.match(/<\/([a-z]*?)>/)[1] == stack[-1].tag
-    # until stack.empty?
-    #   parser(new_node)
-    # end
 end
 
 def outputter(node)
