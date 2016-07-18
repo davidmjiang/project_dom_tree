@@ -1,17 +1,18 @@
 require_relative 'node'
 
+module DOMParser
+
 class HTMLParser
 
   attr_reader :root
 
   OPENING = /<(([a-z][1-9]?)*?)>/
-  CLOSING = /<\/([a-z]*?)>/
+  #CLOSING = /<\/([a-z]*?)>/
   BOTH = /<.*?>/
 
   def initialize(html)
     @root = Node.new("document", {:type => "document"},[], nil) 
     @html = html
-    @stack = []
   end
 
   def tags
@@ -30,9 +31,25 @@ class HTMLParser
     else
       tag_hash[:type] = string.match(/<(.*?)\s/)[1]
     end
+    #class is special because it can have multiple values
+    tag_hash[:class] = string.match(/class="(.*?)"/)[1] if string.match(/class="(.*?)"/)
+    # #catch the rest of the attributes
+    # string.split("=")
+
+    # if string.scan(/"{1}\s{1}(.*?)=/)
+    #   matches = string.scan(/"{1}\s{1}(.*?)=/)
+    #   matches.to_a.each_with_index do |match, idx|
+    #     if idx==0
+    #       next
+    #     else
+    #       tag_hash[match[0].to_sym] = string.match(/#{match}="(.*?)"/)[1]
+    #     end
+    #   end
+    # end
+
     tag_hash[:id] = string.match(/id="(.*?)"/)[1] if string.match(/id="(.*?)"/)
     tag_hash[:name] = string.match(/name="(.*?)"/)[1] if string.match(/name="(.*?)"/)
-    tag_hash[:class] = string.match(/class="(.*?)"/)[1].split(" ") if string.match(/class="(.*?)"/)
+    
     tag_hash
   end
 
@@ -58,6 +75,8 @@ class HTMLParser
         current_node.children << text_array.shift
       end
     end
+    #setting root to the first actual element in the html
+    @root = @root.children[0]
   end
 
   def find_node(node)
@@ -66,15 +85,17 @@ class HTMLParser
 
   def outputter(node)
     current_root = node
-    puts current_root.tag
+    print current_root.tag
     current_root.children.each do |child|
       if child.is_a?(String)
-        puts child
+        print child
       else
         outputter(child)
       end
     end
-    puts "</#{current_root.tag[1..-2]}>"
+    print "</#{current_root.attributes[:type]}>"
   end
+
+end
 
 end

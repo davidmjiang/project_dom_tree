@@ -1,3 +1,5 @@
+module DOMParser
+
 class TreeSearcher
 
   def initialize(tree)
@@ -6,6 +8,7 @@ class TreeSearcher
   end
 
   def search_by(attribute, value)
+    @current_node = @tree
     results = []
     stack = []
     results << @current_node if @current_node.matches_attribute?(attribute, value)
@@ -44,7 +47,7 @@ class TreeSearcher
         end
       end
     end
-    results
+    retresults
   end
 
   def search_ancestors(node, attribute, value)
@@ -63,5 +66,6 @@ class TreeSearcher
     results
   end
 
+end
 
 end

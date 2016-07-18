@@ -1,3 +1,5 @@
+module DOMParser
+
 Node = Struct.new(:tag, :attributes, :children, :parent) do
 
   def matches_attribute?(attribute, value)
@@ -19,6 +21,8 @@ Node = Struct.new(:tag, :attributes, :children, :parent) do
   def to_s
     "Attributes: #{attributes_string}"
   end
+
+end
 
 end
 

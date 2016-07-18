@@ -1,6 +1,8 @@
 require_relative 'html_parser'
 require_relative 'tree_searcher'
 
+module DOMParser
+
 class NodeRenderer
 
   def initialize(tree)
@@ -10,7 +12,8 @@ class NodeRenderer
   end
 
   def render_results(results)
-   puts "We found #{results.length} results for your search."
+   plural = results.length==1 ? "" : "s"
+   puts "We found #{results.length} result#{plural} for your search."
    results.each {|result| puts result}
   end
 
@@ -57,13 +60,5 @@ class NodeRenderer
 
 end
 
-
-test_file = File.read("test.html")
-parser = HTMLParser.new(test_file)
-parser.parse
-searcher = TreeSearcher.new(parser.root)
-renderer = NodeRenderer.new(parser.root)
-lists = searcher.search_by(:type, "li")
-renderer.render_results(lists)
-
+end
 
